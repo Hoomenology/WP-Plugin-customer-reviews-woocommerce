@@ -527,7 +527,7 @@ if (! class_exists('Ivole_All_Reviews')) :
                 if ('yes' !== get_option('ivole_reviews_nobranding', 'no')) {
                     $output .= '<tr class="ivole-histogramRow">';
                     $output .= '<td colspan="3" class="ivole-credits">';
-                    $output .= 'Powered by <a href="https://wordpress.org/plugins/customer-reviews-woocommerce/" target="_blank">Customer Reviews plugin</a>';
+                    // $output .= 'Powered by <a href="https://wordpress.org/plugins/customer-reviews-woocommerce/" target="_blank">Customer Reviews plugin</a>';
                     $output .= '</td>';
                     $output .= '</tr>';
                 }

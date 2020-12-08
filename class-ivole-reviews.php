@@ -35,18 +35,18 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 			$this->ivole_ajax_reviews = get_option( 'ivole_ajax_reviews', 'no' );
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'ivole_style_1' ) );
-			if( 'yes' === get_option( 'ivole_attach_image', 'no' ) ) {
+			// if( 'yes' === get_option( 'ivole_attach_image', 'no' ) ) {
 				add_action( 'woocommerce_product_review_comment_form_args', array( $this, 'custom_fields_attachment' ) );
 				add_filter( 'wp_insert_comment', array( $this, 'save_review_image' ) );
-			}
-			if( 'yes' === get_option( 'ivole_form_attach_media', 'no' ) || 'yes' == get_option( 'ivole_attach_image', 'no' ) ) {
-				if( 'yes' === $this->ivole_ajax_reviews ) {
+			// }
+			// if( 'yes' === get_option( 'ivole_form_attach_media', 'no' ) || 'yes' == get_option( 'ivole_attach_image', 'no' ) ) {
+			// 	if( 'yes' === $this->ivole_ajax_reviews ) {
 					add_filter( 'cr_reviews_array', array( $this, 'display_review_image_ajax' ) );
 					add_action( 'cr_reviews_customer_images', array( $this, 'display_review_images_top' ) );
-				} else {
-					add_filter( 'comments_array', array( $this, 'display_review_image' ), 12 );
-				}
-			}
+			// 	} else {
+			// 		add_filter( 'comments_array', array( $this, 'display_review_image' ), 12 );
+			// 	}
+			// }
 			if( 'yes' === get_option( 'ivole_enable_captcha', 'no' ) ) {
 				if( is_user_logged_in() ) {
 					add_action( 'woocommerce_product_review_comment_form_args', array( $this, 'custom_fields_captcha' ) );
@@ -147,12 +147,19 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 
 						if( $this->is_valid_file_type( $file_ext ) ) {
 							$comment_image_file = wp_upload_bits( $comment_id . '.' . $file_ext, null, file_get_contents( $_FILES[ $comment_image_id ]['tmp_name'][$i] ) );
-							//$img_url = media_sideload_image( $comment_image_file['url'], $post_id );
-							$attachmentId = media_sideload_image( $comment_image_file['url'], $post_id, null, 'id' );
-							//preg_match_all( "#[^<img src='](.*)[^'alt='' />]#", $img_url, $matches );
-							//$comment_image_file['url'] = $matches[0][0];
-							if( !is_wp_error( $attachmentId ) ) {
-								add_comment_meta( $comment_id, 'ivole_review_image2', $attachmentId );
+							$attachment = array(
+                                    'post_mime_type' => $comment_image_file['type'],
+                                    'guid'           => $comment_image_file['url'],
+                                    'post_parent'    => $post_id,
+                                    'post_title'     => preg_replace( '/\.[^.]+$/', '', wp_basename( $comment_image_file['file'] ) ),
+                                    'post_content'   => '',
+                                );
+                        
+                            // Save the attachment metadata.
+                            $attachment_id = wp_insert_attachment( $attachment, $comment_image_file['file'], $post_id, true );
+                            if ( ! is_wp_error( $attachment_id ) ) {
+                                wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $comment_image_file['file'] ) );
+								add_comment_meta( $comment_id, 'ivole_review_image2', $attachment_id );
 							}
 						}
 					}
@@ -533,7 +540,7 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 				if( 'yes' !== get_option( 'ivole_reviews_nobranding', 'no' ) ) {
 					$output .= '<tr class="ivole-histogramRow">';
 					$output .= '<td colspan="3" class="ivole-credits">';
-					$output .= 'Powered by <a href="https://wordpress.org/plugins/customer-reviews-woocommerce/" target="_blank">Customer Reviews plugin</a>';
+					// $output .= 'Powered by <a href="https://wordpress.org/plugins/customer-reviews-woocommerce/" target="_blank">Customer Reviews plugin</a>';
 					$output .= '</td>';
 					$output .= '</tr>';
 				}
