@@ -479,7 +479,20 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 					$output .= '<div class="ivole-summaryBox cr-summaryBox-ajax" data-nonce="' . $nonce . '">';
 				} else {
 					$output .= '<div class="ivole-summaryBox">';
-				}
+                }
+
+                if( 'yes' === get_option( 'ivole_ajax_reviews_form', 'yes' ) ) {
+                    global $product;
+                    $rating_count = $product->get_rating_count();
+                    $review_count = $product->get_review_count();
+                    $average      = $product->get_average_rating();
+                    
+                    $output .= '<div class="ivole-product-rating"><div class="rating"><span class="rating-average">' . $average . '</span>' ;
+                    $output .= wc_get_rating_html($average, $rating_count);
+                    $output .= '<span class="reviews-count">' . $review_count . ' Reviews</span></div>';
+                    $output .= '<p><button class="cr-ajax-reviews-add-review" type="button">Write a Review</button></p></div>';
+                }
+
 				$output .= '<table id="ivole-histogramTable">';
 				$output .= '<tbody>';
 				$output .= '<tr class="ivole-histogramRow">';
@@ -553,8 +566,9 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 						$all_comments = sprintf( esc_html( _n( 'See all %d review', 'See all %d reviews', $all, IVOLE_TEXT_DOMAIN  ) ), $all );
 						$output .= '<span>' . $filtered_comments . '</span><a class="ivole-seeAllReviews" href="' . esc_url( get_permalink( $product_id ) ) . $tab_reviews . '">' . $all_comments . '</a>';
 					}
-				}
-				$output .= '</div>';
+                }
+                $output .= '</div>';
+            
 				echo $output;
 			}
 		}
@@ -1053,9 +1067,7 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 						<?php echo __( 'Most Helpful', IVOLE_TEXT_DOMAIN ); ?>
 					</option>
 				</select>
-			<?php if( 'yes' === get_option( 'ivole_ajax_reviews_form', 'yes' ) ) : ?>
-				<button class="cr-ajax-reviews-add-review" type="button"><?php echo __( 'Add a review', 'woocommerce' ); ?></button>
-			<?php endif; ?>
+			
 			</div>
 			<?php
 		}
@@ -1064,11 +1076,7 @@ if ( ! class_exists( 'Ivole_Reviews' ) ) :
 			if( 'no' === get_option( 'ivole_ajax_reviews_form', 'yes' ) ) {
 				return;
 			}
-			?>
-			<div class="cr-ajax-reviews-sort-div">
-				<button class="cr-ajax-reviews-add-review" type="button"><?php echo __( 'Add a review', 'woocommerce' ); ?></button>
-			</div>
-			<?php
+			
 		}
 
 		public function display_review_images_top( $reviews ) {

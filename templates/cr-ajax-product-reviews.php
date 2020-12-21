@@ -35,6 +35,10 @@ if( method_exists( $product, 'get_id' ) ) {
 ?>
 <div id="reviews" class="woocommerce-Reviews cr-reviews-ajax-reviews">
 	<div id="comments" class="cr-reviews-ajax-comments">
+        <?php
+        $cr_get_reviews = CR_Ajax_Reviews::get_reviews( $cr_product_id );
+        do_action( 'cr_reviews_customer_images', $cr_get_reviews['reviews'] );
+        ?>
 		<h2 class="woocommerce-Reviews-title">
 			<?php
 			$count = $product->get_review_count();
@@ -52,9 +56,8 @@ if( method_exists( $product, 'get_id' ) ) {
 
 			<?php
 			$no_comments_yet = false;
-			$cr_get_reviews = CR_Ajax_Reviews::get_reviews( $cr_product_id );
+			
 			do_action( 'ivole_reviews_summary', $cr_product_id, true );
-			do_action( 'cr_reviews_customer_images', $cr_get_reviews['reviews'] );
 			do_action( 'cr_reviews_sorting', $cr_product_id );
 			?>
 			<ol class="commentlist cr-ajax-reviews-list" data-product="<?php echo $cr_product_id; ?>">

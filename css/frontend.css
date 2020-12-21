@@ -64,10 +64,7 @@ div.ivole-recaptcha { margin-bottom: 1.5em; }
   white-space: nowrap;
   width: auto;
 }
-.ivole-summaryBox {
-  max-width: 320px;
-  font-size: 14px;
-}
+
 div.ivole-summaryBox {
   margin-bottom: 2rem;
 }
@@ -75,13 +72,12 @@ div.ivole-summaryBox {
   margin-bottom: 1rem;
   border-collapse: collapse;
   border: 0px;
-  width: 100%;
 }
 #ivole-histogramTable .ivole-histogramRow {
   border: 0px;
 }
 #ivole-histogramTable tr.ivole-histogramRow td {
-  padding: 0.2rem 0.3rem;
+  padding: 0.4rem 0.3rem;
   vertical-align: middle;
   border: 0px;
 }
@@ -430,20 +426,13 @@ button.cr-ajax-reviews-add-review {
   border-radius: 4px 4px 4px 4px;
   border-color: #ADB1B8 #A2A6AC #8D9096;
   padding: 3px 10px;
-  background: -webkit-linear-gradient(top,#f7f8fa,#e7e9ec);
-  background: linear-gradient(to bottom,#f7f8fa,#e7e9ec);
   font-weight: 600;
   color: black;
   letter-spacing: normal;
   font-size: 1em;
   text-transform: none;
 }
-button.cr-ajax-reviews-add-review:hover {
-    background: #e0e3e9;
-    background: -webkit-linear-gradient(top,#e7eaf0,#d9dce1);
-    background: linear-gradient(to bottom,#e7eaf0,#d9dce1);
-    text-decoration: none;
-}
+
 #cr-ajax-reviews-review-form {
   display: none;
 }
