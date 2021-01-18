@@ -18,7 +18,11 @@
 defined( 'ABSPATH' ) || exit;
 
 global $product;
+global $post;
 
+if (is_string($product)) {
+   $product = wc_get_product( $post );
+}
 if ( ! comments_open() ) {
 	return;
 }
